@@ -11,14 +11,20 @@ function App() {
   const [myuser, setUsers] = useState(users);
 
   const deleteCallback = (id)=>{
-    const data = myuser.filter((user)=>user.id !== id);
+    const data = myuser.filter((user)=>user.id != id);
     setUsers(data);
   }
 
   const addUser = (data)=>{
-    // myuser = {...myuser, ...data};
-    myuser.push(data);
-    setUsers('');
+    // myuser.push(data);
+    setUsers([...myuser, data]);
+  }
+
+  const editUser = (dataa, id)=>{
+    const data = myuser.filter((user)=>user.id != id);
+    setUsers(data);
+    console.log(id);
+    addUser(dataa);
   }
 
   return (
@@ -35,9 +41,11 @@ function App() {
           </div>
         </Route>
         <Route path='/Create'>
-            <AddUser status='add'/>
+            <AddUser status='add' list={myuser} callback={addUser}/>
         </Route>
-        <Route path='/edit/:id' children={<AddUser status='edit' list={myuser} addCallback={addUser} />}></Route>
+        <Route path='/edit/:id'>
+            <AddUser status='edit' list={myuser} callback={editUser} />
+        </Route>
         <Route path='*'>
             <h3>404 not found</h3>
         </Route>
